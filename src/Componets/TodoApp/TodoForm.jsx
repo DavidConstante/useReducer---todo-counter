@@ -1,22 +1,44 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import deleteImg from '../../img/delete.svg'
 import { useForm } from '../../hooks/useForm'
 
 
-const TodoForm = ({ onNewTodo }) => {
+const TodoForm = ({ onNewTodo, updateTodo, onUpdate }) => {
 
-    const { form, onInputChange, onReset } = useForm({});
+    const { form, onInputChange, onReset, onEdit } = useForm({
+        title: '',
+        content: ''
+    });
+
+    useEffect(() => {
+        onEdit(updateTodo);
+    }, [updateTodo])
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const newTodo = {
-            id: new Date().getTime() * 3,
-            title: form.title,
-            content: form.content,
-            done: false
+        if (updateTodo.id) { //Update
+            const editedTodo = {
+                ...updateTodo,
+                title: form.title,
+                content: form.content,
+            }
+            onUpdate(editedTodo);
+            onReset();
+
+        } else { //Save new Todo
+            const newTodo = {
+                id: new Date().getTime() * 3,
+                title: form.title,
+                content: form.content,
+                done: false
+            }
+            onNewTodo(newTodo);
+            onReset();
         }
-        onNewTodo(newTodo)
+
+
 
     }
 
@@ -29,11 +51,13 @@ const TodoForm = ({ onNewTodo }) => {
                 <input
                     className="m-2 border-2 border-black p-2 w-full text-center rounded-lg font-bold" type="text"
                     name="title"
+                    value={form.title || ''}
                     placeholder="Title"
                     onChange={onInputChange}
                 />
                 <textarea
                     name="content"
+                    value={form.content || ''}
                     className="m-2 border-2 border-black p-2 w-full text-center rounded-lg "
                     cols="30"
                     rows="5"

@@ -3,7 +3,7 @@ import React from 'react'
 import deleteImg from '../../img/delete.svg'
 import editImg from '../../img/edit.svg'
 
-const TodoItem = ({ todo, onDelete, onToggle }) => {
+const TodoItem = ({ todo, onDelete, handleLoadEditForm }) => {
 
 
     return (

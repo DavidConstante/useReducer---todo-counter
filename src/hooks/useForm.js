@@ -16,8 +16,12 @@ const useForm = (initialform = {}) => {
         setForm(initialform)
     }
 
+    const onEdit = (data) => {
+        setForm(data)
+    }
 
-    return { form, onInputChange, onReset }
+
+    return { form, onInputChange, onReset, onEdit }
 }
 
 export {
